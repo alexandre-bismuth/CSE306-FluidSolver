@@ -39,9 +39,7 @@ double dot(const Vector &a, const Vector &b) { return a[0] * b[0] + a[1] * b[1] 
 
 Vector cross(const Vector &a, const Vector &b)
 {
-    return Vector(a[1] * b[2] - a[2] * b[1],
-                  a[2] * b[0] - a[0] * b[2],
-                  a[0] * b[1] - a[1] * b[0]);
+    return Vector(a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]);
 }
 
 Vector normalize(const Vector &a) { return a / sqrt(sqr(a[0]) + sqr(a[1]) + sqr(a[2])); }

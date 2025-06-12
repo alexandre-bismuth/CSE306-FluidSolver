@@ -1,10 +1,9 @@
-#include "headers/vector.hpp"
-#include "headers/polygon.hpp"
+#include "headers/utils.hpp"
 
-// Code from given Pastebin https://pastebin.com/bEYVtqYy
+// Code from Pastebin https://pastebin.com/bEYVtqYy
 
 // saves a static svg file. The polygon vertices are supposed to be in the range [0..1], and a canvas of size 1000x1000 is created
-void save_svg(const std::vector<Polygon> &polygons, std::string filename, const std::vector<Vector> *points = NULL, std::string fillcol = "none")
+void save_svg(const std::vector<Polygon> &polygons, std::string filename, const std::vector<Vector> *points, std::string fillcol)
 {
     FILE *f = fopen(filename.c_str(), "w+");
     fprintf(f, "<svg xmlns = \"http://www.w3.org/2000/svg\" width = \"1000\" height = \"1000\">\n");
@@ -92,3 +91,14 @@ void save_svg_animated(const std::vector<Polygon> &polygons, std::string filenam
     }
     fclose(f);
 }
+
+// Code from Slack https://csc3s006ep2024-2025.slack.com/archives/C08J0R6UQK0/p1748447707594079
+// void write_obj(const char *filename)
+// {
+//     FILE *f = fopen(filename, "w+");
+//     for (int i = 0; i < vertices.size(); i++)
+//         fprintf(f, "v %3.5f %3.5f %3.5f\n", vertices[i][0], vertices[i][1], vertices[i][2]);
+//     for (int i = 0; i < indices.size(); i++)
+//         fprintf(f, "f %u %u %u\n", indices[i].vtxi + 1, indices[i].vtxj + 1, indices[i].vtxk + 1);
+//     fclose(f);
+// }

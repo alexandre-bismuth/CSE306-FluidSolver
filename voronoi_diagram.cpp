@@ -1,10 +1,10 @@
-#include "headers/vonoroi_diagram.hpp"
+#include "headers/voronoi_diagram.hpp"
 
-Polygon VonoroiDiagram::clip_by_bisector(const Polygon &V, const Vector &P0, const Vector &Pi)
+Polygon VoronoiDiagram::clipBisector(const Polygon &V, const Vector &P0, const Vector &Pi)
 {
     Polygon result;
     result.vertices.reserve(V.vertices.size() + 1);
-    for (int i = 0; i < V.vertices.size(); i++)
+    for (size_t i = 0; i < V.vertices.size(); i++)
     {
         const Vector &A = V.vertices[(i == 0) ? V.vertices.size() - 1 : i - 1];
         const Vector &B = V.vertices[i];
@@ -34,7 +34,7 @@ Polygon VonoroiDiagram::clip_by_bisector(const Polygon &V, const Vector &P0, con
     return result;
 }
 
-void VonoroiDiagram::compute()
+void VoronoiDiagram::compute()
 {
     Polygon square;
     square.addVertex(Vector(0, 0));
@@ -45,14 +45,14 @@ void VonoroiDiagram::compute()
     cells.resize(points.size());
 
 #pragma omp parallel for schedule(dynamic, 1)
-    for (int i = 0; i < points.size(); i++)
+    for (size_t i = 0; i < points.size(); i++)
     {
         Polygon V = square;
-        for (int j = 0; j < points.size(); j++)
+        for (size_t j = 0; j < points.size(); j++)
         {
             if (i == j)
                 continue;
-            V = clip_by_bisector(V, points[i], points[j]);
+            V = clipBisector(V, points[i], points[j]);
         }
         cells[i] = V;
     }

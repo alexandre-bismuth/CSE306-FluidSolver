@@ -1,9 +1,8 @@
 #ifndef VECTOR_HPP
 #define VECTOR_HPP
 
-#include <vector>
-
 // Code from Ray tracer project
+#include <vector>
 
 class Vector
 {
