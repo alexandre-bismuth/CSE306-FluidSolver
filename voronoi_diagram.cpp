@@ -1,5 +1,8 @@
 #include "headers/voronoi_diagram.hpp"
 
+bool inside(const Vector &V, const Vector &P0, const Vector &Pi) { return (V - P0).norm2() <= (V - Pi).norm2(); }
+bool outside(const Vector &V, const Vector &P0, const Vector &Pi) { return (V - P0).norm2() > (V - Pi).norm2(); }
+
 Polygon VoronoiDiagram::clipBisector(const Polygon &V, const Vector &P0, const Vector &Pi)
 {
     Polygon result;
@@ -9,9 +12,9 @@ Polygon VoronoiDiagram::clipBisector(const Polygon &V, const Vector &P0, const V
         const Vector &A = V.vertices[(i == 0) ? V.vertices.size() - 1 : i - 1];
         const Vector &B = V.vertices[i];
 
-        if ((B - P0).norm2() <= (B - Pi).norm2()) // B inside
+        if (inside(B, P0, Pi))
         {
-            if ((A - P0).norm2() > (A - Pi).norm2()) // A outside
+            if (outside(A, P0, Pi))
             {
                 Vector M = (P0 + Pi) * 0.5;
                 double t = dot(M - A, Pi - P0) / dot(B - A, Pi - P0);
@@ -22,7 +25,7 @@ Polygon VoronoiDiagram::clipBisector(const Polygon &V, const Vector &P0, const V
         }
         else
         {
-            if ((A - P0).norm2() <= (A - Pi).norm2()) // A inside
+            if (inside(A, P0, Pi))
             {
                 Vector M = (P0 + Pi) * 0.5;
                 double t = dot(M - A, Pi - P0) / dot(B - A, Pi - P0);
@@ -36,24 +39,33 @@ Polygon VoronoiDiagram::clipBisector(const Polygon &V, const Vector &P0, const V
 
 void VoronoiDiagram::compute()
 {
-    Polygon square;
-    square.addVertex(Vector(0, 0));
-    square.addVertex(Vector(0, 1));
-    square.addVertex(Vector(1, 1));
-    square.addVertex(Vector(1, 0));
+    Polygon unitSquare;
+    unitSquare.addVertex(Vector(0, 0));
+    unitSquare.addVertex(Vector(0, 1));
+    unitSquare.addVertex(Vector(1, 1));
+    unitSquare.addVertex(Vector(1, 0));
 
     cells.resize(points.size());
 
 #pragma omp parallel for schedule(dynamic, 1)
     for (size_t i = 0; i < points.size(); i++)
-    {
-        Polygon V = square;
+    { // Algorithm from Section 4.3.3 of the textbook
+        // Here, I also implement the optional early-exit from Figure 4.9
+        Polygon V = unitSquare;
+        double R = std::sqrt(2); // Since we use a unit square
         for (size_t j = 0; j < points.size(); j++)
         {
             if (i == j)
                 continue;
+            if ((points[i] - points[j]).norm() > 2. * R)
+                continue;
+
             V = clipBisector(V, points[i], points[j]);
+
+            R = 0.;
+            for (const Vector &vertex : V.vertices)
+                R = std::max(R, (vertex - points[i]).norm());
         }
-        cells[i] = V;
+        cells[i] = std::move(V); // std::move here allows for O(1) instead of O(N) malloc
     }
 }
