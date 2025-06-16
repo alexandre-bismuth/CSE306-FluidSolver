@@ -2,8 +2,7 @@ CXX = c++
 CXXFLAGS = -std=c++11 -O3 -w -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include
 LDFLAGS = -lomp -L/opt/homebrew/opt/libomp/lib
 
-# svg_writer.cpp not in sources as it is included in main
-SOURCES = main.cpp lbfgs.c utils.cpp vector.cpp voronoi_diagram.cpp
+SOURCES = main.cpp lbfgs.c optimal_transport.cpp polygon.cpp utils.cpp vector.cpp voronoi_diagram.cpp
 TARGET = main
 
 $(TARGET): $(SOURCES)

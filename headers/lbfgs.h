@@ -1,3 +1,5 @@
+// Code from https://github.com/chokkan/liblbfgs/blob/master/include/lbfgs.h
+
 /*
  *      C library of Limited memory BFGS (L-BFGS).
  *

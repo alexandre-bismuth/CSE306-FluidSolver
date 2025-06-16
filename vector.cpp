@@ -1,7 +1,7 @@
 #include "headers/vector.hpp"
 #include "headers/utils.hpp"
 
-// Code from Ray tracer project
+// Code from Ray Tracer project - https://github.com/alexandre-bismuth/CSE306-RayTracer
 
 Vector::Vector(double x, double y, double z)
 {

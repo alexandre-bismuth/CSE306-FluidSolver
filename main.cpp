@@ -1,34 +1,29 @@
 #include <iostream>
 #include "headers/utils.hpp"
-#include "headers/voronoi_diagram.hpp"
+#include "headers/config.hpp"
+#include "headers/optimal_transport.hpp"
 
-using namespace std::chrono;
-
-int main(int argc, char **argv) // Optionally add execution arguments later
+int main(int argc, char **argv)
 {
-    const steady_clock::time_point start = steady_clock::now();
+    steady_clock::time_point startExecution = steady_clock::now();
 
     // Global variable definition
-    size_t N = 10000;
+    const size_t N = 2000;
+    const std::string mode = "gaussian"; // Available modes : "uniform", "gaussian", "exponential"
 
     // Environment setup
     VoronoiDiagram Vor;
-    Vor.points.reserve(N);
+    initializePointsAndWeights(Vor, N, mode);
 
     // Main computations
-#pragma omp parallel for schedule(dynamic, 1)
-    for (size_t i = 0; i < N; i++)
-    {
-        Vor.addPoint(Vector(uniform(engine), uniform(engine), 0.));
-    }
     Vor.compute();
+    OptimalTransport ot;
+    ot.vor = Vor;
+    ot.optimize();
 
-    save_svg(Vor.cells, "output/test_output.svg", &Vor.points);
-
-    // Time computations
-    const steady_clock::time_point end = steady_clock::now();
-    double elapsed = duration_cast<milliseconds>(end - start).count() / 1000.;
-    std::cout << "A-Z Execution time : " << elapsed << " seconds" << std::endl;
-
+    // I/O and Time computations
+    save_svg(ot.vor.cells, "output/" + mode + ".svg", &ot.vor.points);
+    steady_clock::time_point endExecution = steady_clock::now();
+    elapsed(startExecution, endExecution);
     return 0;
 }

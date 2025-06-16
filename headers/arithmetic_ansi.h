@@ -1,3 +1,5 @@
+// Code from https://github.com/chokkan/liblbfgs/blob/master/lib/arithmetic_ansi.h
+
 /*
  *      ANSI C implementation of vector operations.
  *
