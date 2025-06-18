@@ -4,7 +4,7 @@ Author : Alexandre Bismuth
 
 Date : June 2025
 
-***The full report for this project can be found in the fluid_solver_report.pdf file***
+***The full report for this project can be found in the FluidSolver_Project_Report.pdf file***
 
 ## Project Overview
 
