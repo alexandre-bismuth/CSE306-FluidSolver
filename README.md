@@ -5,7 +5,8 @@ Author : Alexandre Bismuth
 Date : June 2025
 
 ***The full report for this project can be found in the FluidSolver_Project_Report.pdf file***
-***To see Lab 8, please check out the `FluidDynamics` branch***
+
+***To see the full implementation of Lab 8, please check out the `FluidDynamics` branch***
 
 ## Project Overview
 
