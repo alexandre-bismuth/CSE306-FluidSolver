@@ -15,9 +15,7 @@ public:
     void simulate();
 
     OptimalTransport ot;
-    std::vector<Vector> particles;
-    std::vector<Vector> velocities;
-    std::vector<Vector> colors;
+    std::vector<Vector> particles, velocities;
 
     double mass, eps, dt;
     size_t N, numFluidCells;
