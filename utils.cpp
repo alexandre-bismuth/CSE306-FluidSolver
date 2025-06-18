@@ -9,6 +9,7 @@
 
 #include "headers/utils.hpp"
 #include <sstream>
+#include <iomanip>
 
 // Code from Pastebin https://pastebin.com/bEYVtqYy
 
@@ -175,6 +176,6 @@ void save_frame(const std::vector<Polygon> &cells, std::string filename, size_t 
         }
     }
     std::ostringstream os;
-    os << filename << frameid << ".png";
+    os << filename << std::setfill('0') << std::setw(3) << frameid << ".png";
     stbi_write_png(os.str().c_str(), W, H, 3, &image[0], 0);
 }

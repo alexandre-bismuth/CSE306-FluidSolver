@@ -4,13 +4,19 @@ Author : Alexandre Bismuth
 
 Date : June 2025
 
-***The full report for this project can be found in the fluid_solve_report.pdf file***
+***The full report for this project can be found in the fluid_solver_report.pdf file***
 
 ## Project Overview
 
 This project implements a free-surface 2D fluid solver using incompressible Euler's equations. My project implements all of the mandatory sections of the assignment (Vonoroï Diagrams, Power Diagram, Optimization with LBFGS, de Gallouet-Mérigot incompressible Euler scheme, spring force from each fluid particle to their Laguerre's cell centroid), as well as the ungraded labs (diffusion lab, tutte embedding).
 
 All of the project's code can be found in the present GitHub repository. Files have been split in headers and sources for organizational purposes, and I added a Makefile to simplify compilation.
+
+After generating the frames of the fluid animation by compiling the project with `make main` and running it with `./main`, convert the set of frames into a single GIF files using the following Magick++ command:
+
+```sh
+convert -delay 25 -loop 1 frames/frame*.png animation.gif
+```
 
 ## Acknowledgments
 

@@ -7,16 +7,16 @@
 class VoronoiDiagram
 {
 public:
-    VoronoiDiagram() {};
+    VoronoiDiagram();
 
     inline void addPoint(Vector point) { points.push_back(point); };
     inline void addWeight(double weight) { weights.push_back(weight); };
     void compute();
 
-    std::vector<Vector> points;
+    std::vector<Vector> points, unitDisk;
     std::vector<Polygon> cells;
-    std::vector<double> weights;
-    std::vector<double> constWeights;
+    std::vector<double> weights, constWeights;
+    size_t numDisks;
 };
 
 Polygon clipBisector(const Polygon &V, const Vector &P0, const Vector &Pi, double w0, double wi);

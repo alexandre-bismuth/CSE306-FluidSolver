@@ -1,5 +1,16 @@
 #include "headers/voronoi_diagram.hpp"
 
+VoronoiDiagram::VoronoiDiagram()
+{
+    numDisks = 50;
+    unitDisk.resize(numDisks);
+    for (size_t i = 0; i < numDisks; i++)
+    {
+        double theta = 2 * M_PI * i / (double)numDisks;
+        unitDisk[i] = Vector(cos(theta), sin(theta));
+    }
+}
+
 // Helper functions for clipping
 bool inside(const Vector &V, const Vector &P0, const Vector &Pi, double w0, double wi)
 {
@@ -79,9 +90,9 @@ void VoronoiDiagram::compute()
   // I also implement the optional early-exit from Figure 4.9
     Polygon unitSquare;
     unitSquare.addVertex(Vector(0, 0));
-    unitSquare.addVertex(Vector(0, 1));
-    unitSquare.addVertex(Vector(1, 1));
     unitSquare.addVertex(Vector(1, 0));
+    unitSquare.addVertex(Vector(1, 1));
+    unitSquare.addVertex(Vector(0, 1));
 
     cells.resize(points.size());
 
@@ -101,6 +112,14 @@ void VoronoiDiagram::compute()
             for (const Vector &vertex : V.vertices)
                 R = std::max(R, (vertex - points[i]).norm());
         }
+        for (size_t j = 0; j < numDisks; ++j)
+        {
+            double radius = sqrt(weights[i] - weights[weights.size() - 1]);
+            Vector u = unitDisk[j] * radius + points[i];
+            Vector v = unitDisk[(j + 1) % numDisks] * radius + points[i];
+            V = clipEdge(V, u, v);
+        }
+
         cells[i] = std::move(V); // std::move here allows for O(1) instead of O(N) malloc
     }
 }

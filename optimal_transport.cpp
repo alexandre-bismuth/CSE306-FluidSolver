@@ -6,12 +6,12 @@ void OptimalTransport::optimize()
 { // Code based on Section 4.4.4 (p. 102-103) from the textbook
     const size_t numWeights = vor.weights.size();
     lbfgsfloatval_t fx;
-    std::vector<double> weights(numWeights, 0);
+    std::vector<lbfgsfloatval_t> weights(numWeights, 0);
 
     lbfgs_parameter_t param;
     lbfgs_parameter_init(&param);
     lbfgs(numWeights, weights.data(), &fx, evaluate, progress, this, &param);
-    memcpy(vor.weights.data(), weights.data(), numWeights * sizeof(double));
+    memcpy(vor.weights.data(), weights.data(), numWeights * sizeof(lbfgsfloatval_t));
 }
 
 lbfgsfloatval_t evaluate(void *instance, const lbfgsfloatval_t *x, lbfgsfloatval_t *g,
@@ -24,12 +24,19 @@ lbfgsfloatval_t evaluate(void *instance, const lbfgsfloatval_t *x, lbfgsfloatval
     memcpy(ot->vor.weights.data(), x, n * sizeof(lbfgsfloatval_t));
     ot->vor.compute();
     lbfgsfloatval_t fx = 0.;
-    for (size_t i = 0; i < n; ++i)
+    double sum = 0.;
+    const size_t N = n - 1;
+    for (size_t i = 0; i < N; ++i)
     {
         const double intSquareDist = ot->vor.cells[i].integralNorm2(ot->vor.points[i]);
-        g[i] = ot->vor.cells[i].area() - ot->vor.constWeights[i];
-        fx += intSquareDist - g[i] * x[i];
+        sum += ot->vor.cells[i].area();
+        g[i] = ot->vor.cells[i].area() - VOL_FLUID / N;
+        fx += intSquareDist - x[i] * g[i];
     }
+    // Code based on Section 5.4 (p. 123) from the textbook
+    double estimate = 1. - sum, desired = 1. - estimate;
+    g[N] = desired / N - estimate;
+    fx += x[N] * (desired - estimate);
     return -fx;
 }
 
