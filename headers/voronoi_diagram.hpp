@@ -9,10 +9,8 @@ class VoronoiDiagram
 public:
     VoronoiDiagram() {};
 
-    void addPoint(Vector point) { points.push_back(point); };
-    void addWeight(double weight) { weights.push_back(weight); };
-
-    Polygon clipBisector(const Polygon &V, const Vector &P0, const Vector &Pi, double w0, double wi);
+    inline void addPoint(Vector point) { points.push_back(point); };
+    inline void addWeight(double weight) { weights.push_back(weight); };
     void compute();
 
     std::vector<Vector> points;
@@ -20,5 +18,8 @@ public:
     std::vector<double> weights;
     std::vector<double> constWeights;
 };
+
+Polygon clipBisector(const Polygon &V, const Vector &P0, const Vector &Pi, double w0, double wi);
+Polygon clipEdge(const Polygon &V, const Vector &P0, const Vector &Pi);
 
 #endif

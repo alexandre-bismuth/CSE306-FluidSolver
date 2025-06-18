@@ -3,6 +3,7 @@
 
 #include "vector.hpp"
 #include "voronoi_diagram.hpp"
+#include "utils.hpp"
 
 inline void normalizeWeights(std::vector<double> &weights)
 {

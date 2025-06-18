@@ -2,7 +2,7 @@ CXX = c++
 CXXFLAGS = -std=c++11 -O3 -w -Xpreprocessor -fopenmp -I/opt/homebrew/opt/libomp/include
 LDFLAGS = -lomp -L/opt/homebrew/opt/libomp/lib
 
-SOURCES = main.cpp lbfgs.c optimal_transport.cpp polygon.cpp utils.cpp vector.cpp voronoi_diagram.cpp
+SOURCES = fluid.cpp lbfgs.c main.cpp optimal_transport.cpp polygon.cpp utils.cpp vector.cpp voronoi_diagram.cpp
 TARGET = main
 
 $(TARGET): $(SOURCES)

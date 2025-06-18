@@ -32,6 +32,7 @@
 
 # Executables
 main
+tutte_embedding
 *.exe
 *.out
 *.app

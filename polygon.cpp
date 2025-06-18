@@ -2,7 +2,7 @@
 #include "headers/utils.hpp"
 
 double Polygon::area() const
-{ // Code based on Section 4.1.1 (p. 98) of the textbook
+{ // Code based on Section 4.1.1 (p. 98) of the textbook and the live coding session's code
     if (vertices.size() < 3)
         return 0.;
 
@@ -16,7 +16,7 @@ double Polygon::area() const
 }
 
 double Polygon::integralNorm2(const Vector &Pi) const
-{ // Code based on Section 4.4.4 (p. 103) of the textbook
+{ // Code based on Section 4.4.4 (p. 103) of the textbook and the live coding session's code
     if (vertices.size() < 3)
         return 0.;
     double result = 0.;
@@ -33,4 +33,25 @@ double Polygon::integralNorm2(const Vector &Pi) const
         result += integral * triangleArea / 6.;
     }
     return result;
+}
+
+Vector Polygon::centroid() const
+{
+    // Code based on Section 4.4.1 (p. 98) from the textbook
+    size_t numVertices = vertices.size();
+    if (numVertices < 3)
+        return Vector();
+
+    // I follow the formulas and variables names on p.98 to the letter but
+    // note that for area, we could also simply use the area() method
+    double area = 0., cx = 0., cy = 0.;
+    for (size_t i = 0; i < numVertices; ++i)
+    {
+        const Vector &x = vertices[i], &y = vertices[(i + 1) % numVertices];
+        double crossProduct = cross(x, y)[2];
+        area += crossProduct / 2.;
+        cx += (x[0] + y[0]) * crossProduct;
+        cy += (x[1] + y[1]) * crossProduct;
+    }
+    return Vector(cx / (6. * area), cy / (6. * area));
 }
