@@ -46,6 +46,9 @@ tutte_embedding
 # Icon must end with two \r
 Icon
 
+## Data
+output/frames
+
 
 # Thumbnails
 ._*

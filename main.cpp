@@ -2,7 +2,6 @@
 #include "headers/utils.hpp"
 #include "headers/config.hpp"
 #include "headers/optimal_transport.hpp"
-#include "headers/fluid.hpp"
 
 int main(int argc, char **argv)
 {
