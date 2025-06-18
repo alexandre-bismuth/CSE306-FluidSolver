@@ -7,11 +7,14 @@ void OptimalTransport::optimize()
     const size_t numWeights = vor.weights.size();
     lbfgsfloatval_t fx;
     std::vector<lbfgsfloatval_t> weights(numWeights, 0);
+    for (size_t i = 0; i < numWeights; ++i)
+        weights[i] = vor.weights[i];
 
     lbfgs_parameter_t param;
     lbfgs_parameter_init(&param);
     lbfgs(numWeights, weights.data(), &fx, evaluate, progress, this, &param);
-    memcpy(vor.weights.data(), weights.data(), numWeights * sizeof(lbfgsfloatval_t));
+    for (size_t i = 0; i < numWeights; ++i)
+        vor.weights[i] = weights[i];
 }
 
 lbfgsfloatval_t evaluate(void *instance, const lbfgsfloatval_t *x, lbfgsfloatval_t *g,
@@ -33,10 +36,9 @@ lbfgsfloatval_t evaluate(void *instance, const lbfgsfloatval_t *x, lbfgsfloatval
         g[i] = ot->vor.cells[i].area() - VOL_FLUID / N;
         fx += intSquareDist - x[i] * g[i];
     }
-    // Code based on Section 5.4 (p. 123) from the textbook
-    double estimate = 1. - sum, desired = 1. - estimate;
-    g[N] = desired / N - estimate;
-    fx += x[N] * (desired - estimate);
+    double estimate = 1. - sum, desired = 1. - VOL_FLUID;
+    g[N] = estimate - desired;
+    fx -= x[N] * g[N];
     return -fx;
 }
 

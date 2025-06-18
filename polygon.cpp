@@ -39,8 +39,12 @@ Vector Polygon::centroid() const
 {
     // Code based on Section 4.4.1 (p. 98) from the textbook
     size_t numVertices = vertices.size();
-    if (numVertices < 3)
+    if (numVertices == 0)
         return Vector();
+    if (numVertices == 1)
+        return vertices[0];
+    if (numVertices == 2)
+        return (vertices[0] + vertices[1]) * 0.5;
 
     // I follow the formulas and variables names on p.98 to the letter but
     // note that for area, we could also simply use the area() method

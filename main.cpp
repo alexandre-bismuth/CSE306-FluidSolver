@@ -9,7 +9,7 @@ int main(int argc, char **argv)
     steady_clock::time_point startExecution = steady_clock::now();
 
     // Global variable definition
-    const size_t N = 500, numFluidCells = 100;
+    const size_t N = 500, numFluidCells = 500;
     const double mass = 200, eps = 0.004, dt = 0.002;
 
     // Environment setup

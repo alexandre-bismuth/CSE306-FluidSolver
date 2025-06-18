@@ -28,7 +28,7 @@ void Fluid::stepGallouetMerigot()
 
 void Fluid::simulate()
 {
-    size_t nbIter = 100;
+    size_t nbIter = 250;
     for (size_t i = 0; i < nbIter; ++i)
     {
         stepGallouetMerigot();
